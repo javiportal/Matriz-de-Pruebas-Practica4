@@ -7,24 +7,33 @@ use App\Http\Resources\LoanResource;
 use App\Models\Book;
 use App\Models\Loan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoanController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Historial de préstamos.
+     * Bibliotecario ve todos, estudiante/docente solo los suyos.
      */
     public function index()
     {
-        $loans = Loan::with('book')->paginate();
+        $this->authorize('viewAny', Loan::class);
+
+        $user = Auth::user();
+
+        if ($user->hasRole('bibliotecario')) {
+            $loans = Loan::with('book')->paginate();
+        } else {
+            $loans = $user->loans()->with('book')->paginate();
+        }
 
         return response()->json(LoanResource::collection($loans));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreLoanRequest $request)
     {
+        $this->authorize('create', Loan::class);
+
         $book = Book::find($request->input('book_id'));
 
         if (! $book->is_available || $book->available_copies === 0) {
@@ -32,6 +41,7 @@ class LoanController extends Controller
         }
 
         $loan = Loan::create([
+            'user_id' => Auth::id(),
             'requester_name' => $request->input('requester_name'),
             'book_id' => $request->input('book_id'),
         ]);
@@ -42,30 +52,5 @@ class LoanController extends Controller
         ]);
 
         return response()->json($loan, 201);
-
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }
