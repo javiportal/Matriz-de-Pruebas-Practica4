@@ -4,63 +4,30 @@ namespace App\Policies;
 
 use App\Models\Loan;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class LoanPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Todos los autenticados pueden ver préstamos.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Loan $loan): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can create models.
+     * Solo estudiantes y docentes pueden solicitar préstamos.
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->hasAnyRole(['estudiante', 'docente']);
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Solo el dueño del préstamo puede devolverlo.
      */
-    public function update(User $user, Loan $loan): bool
+    public function return(User $user, Loan $loan): bool
     {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Loan $loan): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Loan $loan): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Loan $loan): bool
-    {
-        return false;
+        return $user->id === $loan->user_id;
     }
 }

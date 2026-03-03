@@ -11,6 +11,7 @@ class Loan extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'requester_name',
         'book_id',
         'return_at',
@@ -23,8 +24,18 @@ class Loan extends Model
         );
     }
 
+    public function isReturned(): bool
+    {
+        return ! is_null($this->return_at);
+    }
+
     public function book()
     {
         return $this->belongsTo(Book::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
