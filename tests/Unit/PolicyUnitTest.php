@@ -22,7 +22,7 @@ class PolicyUnitTest extends TestCase
     }
 
     /** @test */
-    public function user_tiene_trait_has_roles(): void
+    public function test_user_tiene_trait_has_roles(): void
     {
         $this->assertTrue(
             in_array(
@@ -33,7 +33,7 @@ class PolicyUnitTest extends TestCase
     }
 
     /** @test */
-    public function bibliotecario_puede_crear_libros(): void
+    public function test_bibliotecario_puede_crear_libros(): void
     {
         $user = User::factory()->create();
         $user->assignRole('bibliotecario');
@@ -43,7 +43,7 @@ class PolicyUnitTest extends TestCase
     }
 
     /** @test */
-    public function estudiante_no_puede_crear_libros(): void
+    public function test_estudiante_no_puede_crear_libros(): void
     {
         $user = User::factory()->create();
         $user->assignRole('estudiante');
@@ -53,7 +53,7 @@ class PolicyUnitTest extends TestCase
     }
 
     /** @test */
-    public function estudiante_puede_prestar_libros(): void
+    public function test_estudiante_puede_prestar_libros(): void
     {
         $user = User::factory()->create();
         $user->assignRole('estudiante');
@@ -63,7 +63,7 @@ class PolicyUnitTest extends TestCase
     }
 
     /** @test */
-    public function bibliotecario_no_puede_prestar_libros(): void
+    public function test_bibliotecario_no_puede_prestar_libros(): void
     {
         $user = User::factory()->create();
         $user->assignRole('bibliotecario');

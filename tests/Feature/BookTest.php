@@ -36,7 +36,7 @@ class BookTest extends TestCase
 
 
    
-    public function listar_libros_autenticado(): void
+    public function test_listar_libros_autenticado(): void
     {
         Book::factory()->count(3)->create();
 
@@ -47,7 +47,7 @@ class BookTest extends TestCase
     }
 
   
-    public function listar_libros_sin_autenticacion(): void
+    public function test_listar_libros_sin_autenticacion(): void
     {
         $response = $this->getJson('/api/v1/books');
 
@@ -56,7 +56,7 @@ class BookTest extends TestCase
 
     
     
-    public function ver_detalle_libro_existente(): void
+    public function test_ver_detalle_libro_existente(): void
     {
         $book = Book::factory()->create();
 
@@ -68,7 +68,7 @@ class BookTest extends TestCase
     }
 
    
-    public function ver_detalle_libro_inexistente(): void
+    public function test_ver_detalle_libro_inexistente(): void
     {
         $response = $this->actingAs($this->estudiante, 'sanctum')
             ->getJson('/api/v1/books/9999');
@@ -77,7 +77,7 @@ class BookTest extends TestCase
     }
 
     
-    public function crear_libro_como_bibliotecario(): void
+    public function test_crear_libro_como_bibliotecario(): void
     {
         $data = [
             'title' => 'Clean Code',
@@ -97,7 +97,7 @@ class BookTest extends TestCase
     }
 
    
-    public function crear_libro_como_estudiante_retorna_403(): void
+    public function test_crear_libro_como_estudiante_retorna_403(): void
     {
         $data = [
             'title' => 'Test',
@@ -114,7 +114,7 @@ class BookTest extends TestCase
     }
 
    
-    public function crear_libro_como_docente_retorna_403(): void
+    public function test_crear_libro_como_docente_retorna_403(): void
     {
         $data = [
             'title' => 'Test',
@@ -131,7 +131,7 @@ class BookTest extends TestCase
     }
 
    
-    public function crear_libro_con_campos_faltantes(): void
+    public function test_crear_libro_con_campos_faltantes(): void
     {
         $response = $this->actingAs($this->bibliotecario, 'sanctum')
             ->postJson('/api/v1/books', ['title' => '']);
@@ -140,7 +140,7 @@ class BookTest extends TestCase
     }
 
     
-    public function crear_libro_con_isbn_duplicado(): void
+    public function test_crear_libro_con_isbn_duplicado(): void
     {
         Book::factory()->create(['ISBN' => '1234567890123']);
 
@@ -159,7 +159,7 @@ class BookTest extends TestCase
     }
 
     
-    public function actualizar_libro_como_bibliotecario(): void
+    public function test_actualizar_libro_como_bibliotecario(): void
     {
         $book = Book::factory()->create();
 
@@ -172,7 +172,7 @@ class BookTest extends TestCase
             ->assertJsonFragment(['title' => 'Título Actualizado']);
     }
 
-    public function actualizar_libro_como_estudiante_retorna_403(): void
+    public function test_actualizar_libro_como_estudiante_retorna_403(): void
     {
         $book = Book::factory()->create();
 
@@ -185,7 +185,7 @@ class BookTest extends TestCase
     }
 
    
-    public function actualizar_libro_inexistente(): void
+    public function test_actualizar_libro_inexistente(): void
     {
         $response = $this->actingAs($this->bibliotecario, 'sanctum')
             ->putJson('/api/v1/books/9999', [
@@ -196,7 +196,7 @@ class BookTest extends TestCase
     }
 
 
-    public function eliminar_libro_como_bibliotecario(): void
+    public function test_eliminar_libro_como_bibliotecario(): void
     {
         $book = Book::factory()->create();
 
@@ -208,7 +208,7 @@ class BookTest extends TestCase
     }
 
   
-    public function eliminar_libro_como_docente_retorna_403(): void
+    public function test_eliminar_libro_como_docente_retorna_403(): void
     {
         $book = Book::factory()->create();
 
@@ -219,7 +219,7 @@ class BookTest extends TestCase
     }
 
 
-    public function eliminar_libro_inexistente(): void
+    public function test_eliminar_libro_inexistente(): void
     {
         $response = $this->actingAs($this->bibliotecario, 'sanctum')
             ->deleteJson('/api/v1/books/9999');

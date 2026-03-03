@@ -13,7 +13,7 @@ class LoanUnitTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function loan_tiene_campos_fillable_correctos(): void
+    public function test_loan_tiene_campos_fillable_correctos(): void
     {
         $loan = new Loan();
         $expected = ['user_id', 'requester_name', 'book_id', 'return_at'];
@@ -22,7 +22,7 @@ class LoanUnitTest extends TestCase
     }
 
     /** @test */
-    public function loan_pertenece_a_book(): void
+    public function test_loan_pertenece_a_book(): void
     {
         $loan = Loan::factory()->create();
 
@@ -34,7 +34,7 @@ class LoanUnitTest extends TestCase
     }
 
     /** @test */
-    public function loan_pertenece_a_user(): void
+    public function test_loan_pertenece_a_user(): void
     {
         $loan = Loan::factory()->create();
 
@@ -46,7 +46,7 @@ class LoanUnitTest extends TestCase
     }
 
     /** @test */
-    public function is_returned_retorna_true_con_fecha_devolucion(): void
+    public function test_is_returned_retorna_true_con_fecha_devolucion(): void
     {
         $loan = Loan::factory()->returned()->create();
 
@@ -54,7 +54,7 @@ class LoanUnitTest extends TestCase
     }
 
     /** @test */
-    public function is_returned_retorna_false_sin_fecha_devolucion(): void
+    public function test_is_returned_retorna_false_sin_fecha_devolucion(): void
     {
         $loan = Loan::factory()->create(['return_at' => null]);
 

@@ -38,7 +38,7 @@ class LoanTest extends TestCase
     // ==================== PRESTAR ====================
 
     /** @test */
-    public function estudiante_puede_prestar_libro(): void
+    public function test_estudiante_puede_prestar_libro(): void
     {
         $book = Book::factory()->create([
             'available_copies' => 5,
@@ -62,7 +62,7 @@ class LoanTest extends TestCase
     }
 
     /** @test */
-    public function docente_puede_prestar_libro(): void
+    public function test_docente_puede_prestar_libro(): void
     {
         $book = Book::factory()->create([
             'available_copies' => 3,
@@ -80,7 +80,7 @@ class LoanTest extends TestCase
     }
 
     /** @test */
-    public function bibliotecario_no_puede_prestar_libro(): void
+    public function test_bibliotecario_no_puede_prestar_libro(): void
     {
         $book = Book::factory()->create([
             'available_copies' => 5,
@@ -97,7 +97,7 @@ class LoanTest extends TestCase
     }
 
     /** @test */
-    public function no_puede_prestar_libro_sin_stock(): void
+    public function test_no_puede_prestar_libro_sin_stock(): void
     {
         $book = Book::factory()->unavailable()->create();
 
@@ -111,7 +111,7 @@ class LoanTest extends TestCase
     }
 
     /** @test */
-    public function no_puede_prestar_libro_inexistente(): void
+    public function test_no_puede_prestar_libro_inexistente(): void
     {
         $response = $this->actingAs($this->estudiante, 'sanctum')
             ->postJson('/api/v1/loans', [
@@ -123,7 +123,7 @@ class LoanTest extends TestCase
     }
 
     /** @test */
-    public function prestar_sin_autenticacion(): void
+    public function test_prestar_sin_autenticacion(): void
     {
         $response = $this->postJson('/api/v1/loans', [
             'requester_name' => 'Test',
@@ -136,7 +136,7 @@ class LoanTest extends TestCase
     // ==================== DEVOLVER ====================
 
     /** @test */
-    public function devolver_libro_correctamente(): void
+    public function test_devolver_libro_correctamente(): void
     {
         $book = Book::factory()->create([
             'available_copies' => 4,
@@ -158,7 +158,7 @@ class LoanTest extends TestCase
     }
 
     /** @test */
-    public function no_puede_devolver_prestamo_ya_devuelto(): void
+    public function test_no_puede_devolver_prestamo_ya_devuelto(): void
     {
         $loan = Loan::factory()->returned()->create([
             'user_id' => $this->estudiante->id,
@@ -171,7 +171,7 @@ class LoanTest extends TestCase
     }
 
     /** @test */
-    public function no_puede_devolver_prestamo_ajeno(): void
+    public function test_no_puede_devolver_prestamo_ajeno(): void
     {
         $otroEstudiante = User::factory()->create();
         $otroEstudiante->assignRole('estudiante');
@@ -190,7 +190,7 @@ class LoanTest extends TestCase
     // ==================== HISTORIAL ====================
 
     /** @test */
-    public function estudiante_ve_solo_sus_prestamos(): void
+    public function test_estudiante_ve_solo_sus_prestamos(): void
     {
         Loan::factory()->count(2)->create([
             'user_id' => $this->estudiante->id,
@@ -207,7 +207,7 @@ class LoanTest extends TestCase
     }
 
     /** @test */
-    public function bibliotecario_ve_todos_los_prestamos(): void
+    public function test_bibliotecario_ve_todos_los_prestamos(): void
     {
         Loan::factory()->count(5)->create();
 
@@ -221,7 +221,7 @@ class LoanTest extends TestCase
     }
 
     /** @test */
-    public function historial_sin_autenticacion(): void
+    public function test_historial_sin_autenticacion(): void
     {
         $response = $this->getJson('/api/v1/loans');
 

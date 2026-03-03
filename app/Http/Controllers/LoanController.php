@@ -27,7 +27,7 @@ class LoanController extends Controller
             $loans = $user->loans()->with('book')->paginate();
         }
 
-        return response()->json(LoanResource::collection($loans));
+        return LoanResource::collection($loans);
     }
 
     public function store(StoreLoanRequest $request)

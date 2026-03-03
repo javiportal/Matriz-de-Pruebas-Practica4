@@ -11,7 +11,7 @@ class BookUnitTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function book_tiene_campos_fillable_correctos(): void
+    public function test_book_tiene_campos_fillable_correctos(): void
     {
         $book = new Book();
         $expected = ['title', 'description', 'ISBN', 'total_copies', 'available_copies', 'is_available'];
@@ -20,7 +20,7 @@ class BookUnitTest extends TestCase
     }
 
     /** @test */
-    public function book_tiene_relacion_has_many_loans(): void
+    public function test_book_tiene_relacion_has_many_loans(): void
     {
         $book = Book::factory()->create();
 
@@ -31,7 +31,7 @@ class BookUnitTest extends TestCase
     }
 
     /** @test */
-    public function is_available_retorna_true_con_stock(): void
+    public function test_is_available_retorna_true_con_stock(): void
     {
         $book = Book::factory()->create([
             'available_copies' => 5,
@@ -42,7 +42,7 @@ class BookUnitTest extends TestCase
     }
 
     /** @test */
-    public function is_available_retorna_false_sin_stock(): void
+    public function test_is_available_retorna_false_sin_stock(): void
     {
         $book = Book::factory()->unavailable()->create();
 

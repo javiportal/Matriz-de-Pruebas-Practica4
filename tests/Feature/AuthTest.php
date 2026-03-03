@@ -19,7 +19,7 @@ class AuthTest extends TestCase
         Role::create(['name' => 'docente', 'guard_name' => 'web']);
     }
 
-    public function login_exitoso_con_credenciales_validas(): void
+    public function test_login_exitoso_con_credenciales_validas(): void
     {
         $user = User::factory()->create(['password' => bcrypt('password123')]);
 
@@ -32,7 +32,7 @@ class AuthTest extends TestCase
             ->assertJsonStructure(['access_token', 'token_type', 'user']);
     }
 
-    public function login_fallido_credenciales_invalidas(): void
+    public function test_login_fallido_credenciales_invalidas(): void
     {
         $user = User::factory()->create();
 
@@ -44,7 +44,7 @@ class AuthTest extends TestCase
         $response->assertStatus(401);
     }
 
-    public function login_fallido_campos_vacios(): void
+    public function test_login_fallido_campos_vacios(): void
     {
         $response = $this->postJson('/api/v1/login', [
             'email' => '',
@@ -54,7 +54,7 @@ class AuthTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function login_fallido_email_formato_invalido(): void
+    public function test_login_fallido_email_formato_invalido(): void
     {
         $response = $this->postJson('/api/v1/login', [
             'email' => 'not-an-email',
@@ -66,7 +66,7 @@ class AuthTest extends TestCase
 
 
 
-    public function logout_exitoso_con_token_valido(): void
+    public function test_logout_exitoso_con_token_valido(): void
     {
         $user = User::factory()->create();
 
@@ -77,14 +77,14 @@ class AuthTest extends TestCase
             ->assertJsonFragment(['message' => 'Logged out successfully']);
     }
 
-    public function logout_fallido_sin_autenticacion(): void
+    public function test_logout_fallido_sin_autenticacion(): void
     {
         $response = $this->postJson('/api/v1/logout');
 
         $response->assertStatus(401);
     }
 
-    public function obtener_perfil_con_token_valido(): void
+    public function test_obtener_perfil_con_token_valido(): void
     {
         $user = User::factory()->create();
 
@@ -96,7 +96,7 @@ class AuthTest extends TestCase
     }
 
 
-    public function perfil_sin_autenticacion(): void
+    public function test_perfil_sin_autenticacion(): void
     {
         $response = $this->getJson('/api/v1/profile');
 
